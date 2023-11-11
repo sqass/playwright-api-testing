@@ -26,5 +26,5 @@ Before you begin, make sure you have the following prerequisites installed on yo
 1. Write a get request `api/Candy?storeName=Target` to retrieve the candy details from store and validate HttpStatusCode and Quantity is 35.
 2. Look at this [video](https://youtu.be/P9s8ENoN80M) how to write the test
 
-Practice test : Now write a another test passing `Kroger` as input and validate if the HttpStatusCode is 404 or not
+Practice test : Now, create another test with Kroger as input and verify whether the HttpStatusCode is 404 or not.
 
