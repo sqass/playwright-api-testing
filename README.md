@@ -23,7 +23,76 @@ Before you begin, make sure you have the following prerequisites installed on yo
 
 # Lesson 1 - GET
 
-1. Compose a GET request for the API endpoint api/Candy?storeName=Target to fetch candy details from the store. Verify the HttpStatusCode is 200 and ensure that the Quantity is 35. Refer to the [video](https://youtu.be/P9s8ENoN80M) for guidance on writing the test
+1. Compose a GET request for the API endpoint `api/Candy?storeName=Target` to fetch candy details from the store. Verify the HttpStatusCode is 200 and ensure that the Quantity is 35. Refer to the [video](https://youtu.be/P9s8ENoN80M) for guidance on writing the test
 
-Practice test : Now, create another test with Kroger as input and verify whether the HttpStatusCode is 404 or not and whether the response body contains the storename or not
+### Practice Tests :
+1. Now, create another test with Kroger as input and verify whether the HttpStatusCode is 404 or not and whether the response body contains the storename or not
+<details>
+    <summary>Click to reveal answer</summary>
+
+```js
+        test('When no candy details present in store', async ( {request})=> {
+            const response = await request.get('http://localhost:3000/api/Candy?storeName=Kroger');
+            const responseAsJson = await response.json();
+
+            await expect(response.status()).toBe(404);
+            expect(responseAsJson.error).toContain('Kroger');
+        })
+```
+</details>
+
+
+# Lesson 2 - POST
+
+Create a POST request for the API endpoint `/api/candy` , with below requestBody to create a new candy entry details for a store
+
+```json
+{
+    "Name": "Snickers",
+    "Company": "Wrigley Company",
+    "Store": "Target",
+    "Quantity" : 10
+}
+```
+
+### Practice Tests
+ 
+1. Create a assertion to validate Whether the Quantity is `10` or not from the output response
+<details>
+<summary>Click to reveal answer</summary>
+```js
+    expect(responseAsJson.Quantity).toEqual(10);
+```    
+</details>
+
+2. Create a assertion to validate whether the value of Name is `Snickers` or not
+<details>
+<summary>Click to reveal answer</summary>
+```js
+        expect(responseAsJson.Name).toEqual("Snickers");
+```
+</details>
+
+3. Create a test to validate 400 status when one of the input details is passed invalid/emtpy
+
+<details>
+    <summary>Click to reveal answer</summary>
+
+```js
+       test('Validate error status when Quantity is missing from request Body', async ( {request})=> {
+            const requestBody = {
+                "Name": "Snickers",
+                "Company": "Wrigley Company",
+                "Store": "Target"
+            }
+
+            const response = await request.post('http://localhost:3000/api/Candy', { data: requestBody});
+            const responseAsJson = await response.json();
+
+            await expect(response.status()).toBe(400);
+            expect(responseAsJson.error).toContain('Invalid candy data. Please provide Name, Company, Quantity and Store.');
+      })
+```
+</details>
+
 
