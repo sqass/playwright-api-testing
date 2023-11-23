@@ -44,7 +44,7 @@ Before you begin, make sure you have the following prerequisites installed on yo
 
 # Lesson 2 - POST
 
-Create a POST request for the API endpoint `/api/candy` , with below requestBody to create a new candy entry details for a store
+Create a POST request for the API endpoint `/api/candy` , with below requestBody to create a new candy entry details for a store. Verify the HttpStatusCode is 201. Refer to this [video](https://youtu.be/3YkNIYBjWSg) for guidance on writing the test
 
 ```json
 {
@@ -93,6 +93,53 @@ Create a POST request for the API endpoint `/api/candy` , with below requestBody
             expect(responseAsJson.error).toContain('Invalid candy data. Please provide Name, Company, Quantity and Store.');
       })
 ```
+</details>
+
+
+
+# Lesson 3 - PUT
+
+Create a PUT request for the API endpoint `/api/candy` , with below requestBody to update the quantity of candy for a store. Verify the HttpStatusCode is 200 and new quantity value from output. Refer to this [video](https://youtu.be/Gy8Gbw_yWOM) for guidance on writing the test
+
+```json
+{
+    "Name": "Snickers",
+    "Company": "Mars, Incorporated",
+    "Quantity": 50,
+    "Store": "Target"
+}
+```
+
+### Practice Tests
+ 
+1. Create a test case with the provided request body, and ensure that the HTTP status code is 404 when candy details are not found in the specified store. Additionally, validate the error message in the response output.
+```json
+{
+     "Name": "Hershey",
+     "Company": "Hershey llc",
+     "Quantity": 50,
+     "Store": "Target"
+}
+```
+
+<details>
+<summary>Click to reveal answer</summary>
+```js
+    test('update quantity when candy details are not found in store', async ( {request})=> {
+    const requestBody = {
+        "Name": "Hershey",
+        "Company": "Hershey llc",
+        "Quantity": 50,
+        "Store": "Target"
+    }
+
+    const response = await request.put('http://localhost:3000/api/Candy', { data: requestBody});
+    const responseAsJson = await response.json();
+
+    await expect(response.status()).toBe(404);
+    expect(responseAsJson.error).toContain("Candy 'Hershey' not found.");
+})
+```    
 </details>
 
 

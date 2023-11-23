@@ -64,16 +64,24 @@ app.post('/api/candy', (req, res) => {
   res.status(201).json(newCandy);
 });
 
-app.patch('/update-product-quantity', (req, res) => {
-  // Update the quantity with the value provided in the request body
-  const newQuantity = req.body.Quantity;
+// Endpoint to update candy details (PUT request)
+app.put('/api/candy/', (req, res) => {
+  const updatedCandy = req.body;
 
-  if (newQuantity !== undefined) {
-    product.Quantity = newQuantity;
-    res.json({ message: 'Quantity updated successfully', product });
-  } else {
-    res.status(400).json({ message: 'Invalid request. Quantity not provided in the request body.' });
+  if (!updatedCandy || !updatedCandy.Name || !updatedCandy.Company || !updatedCandy.Store) {
+    return res.status(400).json({ error: 'Invalid candy data. Please provide Name, Company, and Store.' });
   }
+
+  const candyIndex = candyData.findIndex(candy => candy.Name === updatedCandy.Name && candy.Store === updatedCandy.Store);
+
+  if (candyIndex === -1) {
+    return res.status(404).json({ error: `Candy '${updatedCandy.Name}' not found.` });
+  }
+
+  // Update the candy details in the array
+  candyData[candyIndex] = { ...candyData[candyIndex], ...updatedCandy };
+
+  res.json(candyData[candyIndex]);
 });
 
 

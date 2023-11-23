@@ -24,3 +24,17 @@ test('create new candy details in the store', async ( {request})=> {
 })
 
 
+test('update quantity of candy in a given store', async ( {request})=> {
+    const requestBody = {
+        "Name": "Snickers",
+        "Company": "Mars, Incorporated",
+        "Quantity": 50,
+        "Store": "Target"
+    }
+
+    const response = await request.put('http://localhost:3000/api/Candy', { data: requestBody});
+    const responseAsJson = await response.json();
+
+    await expect(response.status()).toBe(200);
+    expect(responseAsJson.Quantity).toStrictEqual(50);
+})
